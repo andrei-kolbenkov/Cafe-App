@@ -1,0 +1,23 @@
+pip install django
+pip install djangorestframework
+pip install django-rest-swagger
+pip install django-debug-toolbar
+pip install drf-yasg
+pip install -U drf-yasg
+pip install -U drf-yasg[validation]
+pip install django-filter
+pip install django-debug-toolbar
+
+
+django-admin startproject shop
+python .\manage.py startapp shop_app
+python manage.py runserver 8001
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+
+cd ./"my freelance"/13/django/shop
+
+superadmin gwg5e1g351a
+user11 6d6r9f8f5
+.\.venv\Scripts\Activate.ps1
