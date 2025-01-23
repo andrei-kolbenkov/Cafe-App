@@ -1,32 +1,35 @@
-<!-- add_order.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-{% if order %}
-    <h1>Редактировать заказ</h1>
-{% else %}
-    <h1>Добавить заказ</h1>
-{% endif %}
-<form method="post" id="order-form">
-    {% csrf_token %}
-    <p>
-        {{ form.table_number.label_tag }}<br>
-        {{ form.table_number }}
-    </p>
-    <p>
-        {{ form.items.label_tag }}<br>
-        {{ form.items }}
-    </p>
-    <p>
-        {{ form.status.label_tag }}<br>
-        {{ form.status }}
-    </p>
-    <div class="form-group">
-        <label>Общая стоимость</label>
-        <p id="total-price" class="form-control-static">{{ form.total_price.value|default:"0.00" }} р.</p>
+<div class="container">
+    <div class="form-header">
+        {% if order %}
+            <h1>Редактировать заказ</h1>
+        {% else %}
+            <h1>Добавить заказ</h1>
+        {% endif %}
     </div>
-    <button type="submit">Сохранить</button>
-</form>
+    <form method="post" id="order-form" class="order-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_table_number">{{ form.table_number.label }}</label>
+            {{ form.table_number }}
+        </div>
+        <div class="form-group">
+            <label for="id_items">{{ form.items.label }}</label>
+            {{ form.items }}
+        </div>
+        <div class="form-group">
+            <label for="id_status">{{ form.status.label }}</label>
+            {{ form.status }}
+        </div>
+        <div class="form-group">
+            <label>Общая стоимость</label>
+            <p id="total-price" class="form-control-static">{{ form.total_price.value|default:"0.00" }} р.</p>
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </form>
+</div>
 
 <script>
     const itemsCheckboxes = document.querySelectorAll('#id_items input[type="checkbox"]');
@@ -50,8 +53,63 @@
 
         calculateTotalPrice(); // Рассчитать стоимость сразу после загрузки страницы
     });
-
-
 </script>
 
+<style>
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-header h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .form-group p {
+        margin-top: 5px;
+        font-size: 16px;
+    }
+
+    .form-control-static {
+        padding: 10px;
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        color: #495057;
+    }
+
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #218838;
+    }
+</style>
 {% endblock %}

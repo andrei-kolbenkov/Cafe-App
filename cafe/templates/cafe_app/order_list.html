@@ -1,28 +1,233 @@
-<!-- order_list.html -->
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Список заказов</h1>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Номер стола</th>
-        <th>Общая стоимость</th>
-        <th>Статус</th>
-        <th>Действия</th>
-    </tr>
-    {% for order in orders %}
-    <tr>
-        <td>{{ order.id }}</td>
-        <td>{{ order.table_number }}</td>
-        <td>{{ order.total_price }}</td>
-        <td>{{ order.get_status_display }}</td>
-        <td>
-            <a href="{% url 'edit_order' order.id %}">Редактировать</a> |
-            <a href="{% url 'delete_order' order.id %}">Удалить</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-<a href="{% url 'add_order' %}">Добавить новый заказ</a>
+<div class="container">
+    <h1>Список заказов</h1>
+    <form method="get" class="search-form">
+        <div class="search-container">
+            <input
+                type="text"
+                name="q"
+                value="{{ query }}"
+                placeholder="Введите номер стола или блюдо"
+                class="search-input"
+            />
+            <button type="submit" class="btn btn-search">
+                🔍 Искать
+            </button>
+        </div>
+        <!-- Форма для сортировки по статусу -->
+    <select name="status" class="status-select" onchange="this.form.submit()">
+        <option value="">Сортировать по статусу</option>
+        <option value="waiting" {% if status == 'waiting' %}selected{% endif %}>В ожидании</option>
+        <option value="ready" {% if status == 'ready' %}selected{% endif %}>Готово</option>
+        <option value="paid" {% if status == 'paid' %}selected{% endif %}>Оплачено</option>
+    </select>
+    </form>
+
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Номер стола</th>
+                <th>Общая стоимость</th>
+                <th style="width: 500px">Блюда</th>
+                <th style="width: 200px">Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.table_number }}</td>
+                <td>{{ order.total_price }} р.</td>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        {% for item in order.items.all %}
+                        <li>{{ item.name }}</li>
+                        {% empty %}
+                        <li>Нет добавленных блюд</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ order.get_status_display }}</td>
+                <td>
+                    <a href="{% url 'edit_order' order.id %}" class="btn btn-edit">Редактировать</a>
+                    <a href="{% url 'delete_order' order.id %}" class="btn btn-delete">Удалить</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="add-order">
+        <a href="{% url 'add_order' %}" class="btn btn-add">Добавить новый заказ</a>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .order-table th, .order-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .order-table th {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+
+    .order-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .order-table tr:hover {
+        background-color: #eaf4ff;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 8px 12px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .btn-edit {
+        background-color: #ffc107;
+        color: white;
+        margin: 5px;
+    }
+
+    .btn-edit:hover {
+        background-color: #e0a800;
+    }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        margin: 5px;
+    }
+
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
+
+    .btn-add {
+        background-color: #28a745;
+        color: white;
+        text-align: center;
+        display: block;
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    .btn-add:hover {
+        background-color: #218838;
+    }
+
+    .add-order {
+        text-align: center;
+    }
+    .search-form {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .search-container {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: #f9f9f9;
+    }
+
+    .search-input {
+        border: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        width: 300px;
+        outline: none;
+    }
+
+    .search-input::placeholder {
+        color: #aaa;
+    }
+
+    .btn-search {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-search:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-search:active {
+        background-color: #003f8a;
+    }
+    .status-select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    width: 200px;
+    }
+
+    .status-select:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .status-select option {
+        padding: 10px;
+    }
+
+    .status-select option:disabled {
+        color: #aaa;
+    }
+
+    .status-select option[selected] {
+        font-weight: bold;
+    }
+
+    .status-select::after {
+        content: "▼"; /* Добавляем стрелку вниз */
+        padding-left: 5px;
+    }
+</style>
 {% endblock %}

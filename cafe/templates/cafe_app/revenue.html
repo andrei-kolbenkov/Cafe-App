@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Выполненные заказы</h1>
+    {% if orders %}
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>ID заказа</th>
+                    <th>Номер стола</th>
+                    <th>Сумма</th>
+                    <th>Статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.table_number }}</td>
+                    <td>{{ order.total_price }} р.</td>
+                    <td>{{ order.get_status_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="total-revenue">
+            <strong>Общая выручка:</strong> {{ total_revenue }} р.
+        </div>
+    {% else %}
+        <h2>Нет оплаченных заказов</h2>
+    {% endif %}
+</div>
+
+<style>
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    table th, table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .total-revenue {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: right;
+        margin-top: 10px;
+    }
+</style>
+{% endblock %}
