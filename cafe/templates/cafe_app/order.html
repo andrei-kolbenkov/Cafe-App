@@ -1,0 +1,57 @@
+<!-- add_order.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+{% if order %}
+    <h1>Редактировать заказ</h1>
+{% else %}
+    <h1>Добавить заказ</h1>
+{% endif %}
+<form method="post" id="order-form">
+    {% csrf_token %}
+    <p>
+        {{ form.table_number.label_tag }}<br>
+        {{ form.table_number }}
+    </p>
+    <p>
+        {{ form.items.label_tag }}<br>
+        {{ form.items }}
+    </p>
+    <p>
+        {{ form.status.label_tag }}<br>
+        {{ form.status }}
+    </p>
+    <div class="form-group">
+        <label>Общая стоимость</label>
+        <p id="total-price" class="form-control-static">{{ form.total_price.value|default:"0.00" }} р.</p>
+    </div>
+    <button type="submit">Сохранить</button>
+</form>
+
+<script>
+    const itemsCheckboxes = document.querySelectorAll('#id_items input[type="checkbox"]');
+    const totalPriceField = document.getElementById('total-price');
+
+    const calculateTotalPrice = () => {
+        let total = 0;
+        itemsCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                total += parseFloat(checkbox.dataset.price);
+            }
+        });
+        totalPriceField.textContent = total.toFixed(2) + " р.";
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        itemsCheckboxes.forEach(checkbox => {
+            checkbox.dataset.price = parseFloat(checkbox.getAttribute('data-price'));
+            checkbox.addEventListener('change', calculateTotalPrice);
+        });
+
+        calculateTotalPrice(); // Рассчитать стоимость сразу после загрузки страницы
+    });
+
+
+</script>
+
+{% endblock %}

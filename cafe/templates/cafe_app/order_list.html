@@ -1,0 +1,28 @@
+<!-- order_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Список заказов</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Номер стола</th>
+        <th>Общая стоимость</th>
+        <th>Статус</th>
+        <th>Действия</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.table_number }}</td>
+        <td>{{ order.total_price }}</td>
+        <td>{{ order.get_status_display }}</td>
+        <td>
+            <a href="{% url 'edit_order' order.id %}">Редактировать</a> |
+            <a href="{% url 'delete_order' order.id %}">Удалить</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'add_order' %}">Добавить новый заказ</a>
+{% endblock %}
