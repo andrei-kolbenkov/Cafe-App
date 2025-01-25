@@ -9,6 +9,10 @@ class Dish(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Блюдо"
+        verbose_name_plural = "Блюда"
+
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -33,6 +37,11 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Заказ {self.id} для стола {self.table_number} ======= {self.total_price} р.'
+
+
+    class Meta:
+        verbose_name = "Заказ"
+        verbose_name_plural = "Заказы"
 
 
 

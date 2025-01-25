@@ -1,8 +1,9 @@
-# views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from rest_framework.viewsets import ModelViewSet
 from django.db.models import Sum, Q
-from .models import Order
+from .models import Order, Dish
+from .serializers import OrderSerializer, DishSerializer
 from .forms import OrderForm
 
 # Отображение списка всех заказов
@@ -64,3 +65,13 @@ def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.delete()
     return redirect('order_list')
+
+
+
+class OrderViewSet(ModelViewSet):
+    queryset = Order.objects.prefetch_related('items')  # Оптимизация запросов
+    serializer_class = OrderSerializer
+
+class DishViewSet(ModelViewSet):
+    queryset = Dish.objects.all()
+    serializer_class = DishSerializer
