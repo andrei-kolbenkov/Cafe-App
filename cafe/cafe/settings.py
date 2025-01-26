@@ -79,6 +79,10 @@ WSGI_APPLICATION = 'cafe.wsgi.application'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': [
+            'django_filters.rest_framework.DjangoFilterBackend',
+            'rest_framework.filters.SearchFilter',
+        ]
 }
 
 # Database
@@ -93,9 +97,9 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'postgres1',
+#         'NAME': 'postgres',
 #         'USER': 'postgres',
-#         'PASSWORD': '1a2s3d4f',
+#         'PASSWORD': '12345678',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
@@ -135,7 +139,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Define STATIC_ROOT to specify the directory where collected static files should be stored
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

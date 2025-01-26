@@ -16,6 +16,6 @@ urlpatterns = [
     path('edit/<int:order_id>/', views.edit_order, name='edit_order'),
     path('delete/<int:order_id>/', views.delete_order, name='delete_order'),
     path('revenue/', views.revenue, name='revenue'),
-
+    path('api/orders/search/', views.OrderSearchView.as_view(), name='order-search'),
     path('api/', include(router.urls)),  # Все API маршруты
 ]
