@@ -31,6 +31,11 @@ class DishCheckboxSelectMultiple(forms.CheckboxSelectMultiple):
                 f'value="{dish.id}"',
                 f'value="{dish.id}" data-price="{price}"'
             )
+            # Добавляем цену к названию блюда
+            output = output.replace(
+                f'{dish.name}',
+                f'{dish.name} — {price} р.'
+            )
 
         # Возвращаем безопасный HTML-код.
         return mark_safe(output)

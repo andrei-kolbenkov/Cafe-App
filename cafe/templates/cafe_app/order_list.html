@@ -16,7 +16,6 @@
                 🔍 Искать
             </button>
         </div>
-        <!-- Форма для сортировки по статусу -->
     <select name="status" class="status-select" onchange="this.form.submit()">
         <option value="">Сортировать по статусу</option>
         <option value="waiting" {% if status == 'waiting' %}selected{% endif %}>В ожидании</option>
@@ -70,11 +69,10 @@
         max-width: 800px;
         margin: 0 auto;
         padding: 20px;
-        background-color: rgba(255, 255, 255, 0.5); /* Полупрозрачный белый цвет *
-        -webkit-backdrop-filter: blur(10px); /* Для Safari */
-        border-radius: 10px; /* Сглаженные углы (по желанию) */
-        padding: 20px; /* Внутренние отступы */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень для красоты */
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
@@ -107,9 +105,14 @@
         background-color: #f2f2f2;
     }
 
-    .order-table tr:hover {
-        background-color: #eaf4ff;
+    .order-table tr {
+        transition: background-color 0.3s ease; /* Плавный переход цвета за 0.3 секунды */
     }
+
+    .order-table tr:hover {
+        background-color: #f5ffbf; /* Цвет при наведении */
+    }
+
 
     .btn {
         display: inline-block;
@@ -202,14 +205,14 @@
         background-color: #003f8a;
     }
     .status-select {
-        padding: 11px 20px;          /* Увеличиваем отступы внутри */
-        font-size: 16px;             /* Увеличиваем размер шрифта */
+        padding: 11px 20px;
+        font-size: 16px;
         border: 1px solid #ddd;
         border-radius: 5px;
         background-color: #fff;
         cursor: pointer;
         transition: border-color 0.3s ease, background-color 0.3s ease;
-        width: 250px;                /* Ширина немного больше для лучшего вида */
+        width: 250px;
     }
 
     .status-select:focus {
@@ -230,7 +233,7 @@
     }
 
     .status-select::after {
-        content: "▼"; /* Добавляем стрелку вниз */
+        content: "▼";
         padding-left: 5px;
     }
 </style>
